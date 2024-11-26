@@ -93,7 +93,7 @@ jobs:
       - name: Debug upload artifact
         run: |
           echo "Artifact name: Artifact-${{ matrix.qt_arch }}"
-          echo "File path: ./${{ steps.package.outputs.packageName }}"
+          echo "File path: ./${{ env.packageName }}"
           ls ./${{ env.packageName }}
 
       - name: Upload release asset
