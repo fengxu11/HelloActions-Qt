@@ -70,6 +70,8 @@ jobs:
         run: |
           Write-Host "Current directory content:"
           Get-ChildItem -Path .
+          Write-Host "Release directory content:"
+          Get-ChildItem -Path ./release
 
       - name: package
         env:
