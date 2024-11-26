@@ -61,7 +61,7 @@ jobs:
       - name: mingw-build
         shell: cmd
         run: |
-          qmake
+          qmake CONFIG+=static 
           mingw32-make || exit /b 1
           dir
 
