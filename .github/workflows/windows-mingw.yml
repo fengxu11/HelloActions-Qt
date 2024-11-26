@@ -102,12 +102,11 @@ jobs:
           name: Artifact-${{ matrix.qt_arch }}
           path: ./${{ steps.package.outputs.packageName }}
 
-      - name: Upload to GitHub Release
-        uses: actions/upload-release-asset@v1
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.package.outputs.packageName }}
-          asset_name: ${{ steps.package.outputs.packageName }}
-          label: "Release package for ${{ matrix.qt_arch }}"
+          tag_name: v${{ inputs.tag }}
+          files: ./${{ steps.package.outputs.packageName }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
 
