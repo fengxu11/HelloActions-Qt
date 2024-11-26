@@ -83,19 +83,19 @@ jobs:
         run: |
           Compress-Archive -Path $env:targetName -DestinationPath "$env:archiveName.zip"
           Write-Host "Archive created: $env:archiveName.zip"
-          echo "packageName=$env:archiveName.zip" >> $GITHUB_ENV
+          echo "::set-output name=packageName::$env:archiveName.zip"
 
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.packageName }}
-          path: ./${{ env.packageName }}
+          name: ${{ steps.package.outputs.packageName }}
+          path: ./${{ steps.package.outputs.packageName }}
 
-      - name: uploadRelease
-        if: startsWith(github.event.ref, 'refs/tags/')
-        uses: svenstaro/upload-release-action@v2
+      - name: Upload to GitHub Release
+        uses: actions/upload-release-asset@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.packageName }}.zip
-          asset_name: ${{ env.packageName }}.zip
-          tag: ${{ github.ref }}
-          overwrite: true
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.package.outputs.packageName }}
+          asset_name: ${{ steps.package.outputs.packageName }}
+          label: "Release package for ${{ matrix.qt_arch }}"
+
+
