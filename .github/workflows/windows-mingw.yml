@@ -62,7 +62,14 @@ jobs:
         shell: cmd
         run: |
           qmake
-          mingw32-make
+          mingw32-make || exit /b 1
+          dir
+
+      - name: Debug directory structure
+        shell: pwsh
+        run: |
+          Write-Host "Current directory content:"
+          Get-ChildItem -Path .
 
       - name: package
         env:
