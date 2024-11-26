@@ -94,7 +94,7 @@ jobs:
         run: |
           echo "Artifact name: Artifact-${{ matrix.qt_arch }}"
           echo "File path: ./${{ steps.package.outputs.packageName }}"
-          ls ./${{ steps.package.outputs.packageName }}
+          ls ./${{ env.packageName }}
 
       - name: Upload release asset
         uses: softprops/action-gh-release@v1
