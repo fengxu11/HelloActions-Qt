@@ -27,7 +27,7 @@ jobs:
             qt_tools_mingw_install: mingw810_64
           # 可以继续添加更多配置
     env:
-      targetName: HelloActions-Qt.exe
+      targetName: ./bin/release/HelloActions-Qt.exe
 
     steps:
       - name: Install Qt
