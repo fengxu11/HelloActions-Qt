@@ -84,7 +84,7 @@ jobs:
           if (Test-Path -Path $env:targetName) {
             Compress-Archive -Path $env:targetName -DestinationPath "$env:archiveName.zip"
             Write-Host "Archive created: $env:archiveName.zip"
-            echo "::set-output name=packageName::$env:archiveName.zip"
+            echo "packageName=$env:archiveName.zip" >> $GITHUB_ENV
           } else {
             Write-Host "Error: Target file '$env:targetName' not found."
             exit 1
@@ -96,17 +96,11 @@ jobs:
           echo "File path: ./${{ steps.package.outputs.packageName }}"
           ls ./${{ steps.package.outputs.packageName }}
 
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Artifact-${{ matrix.qt_arch }}
-          path: ./${{ steps.package.outputs.packageName }}
-
       - name: Upload release asset
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ inputs.tag }}
-          files: ./${{ steps.package.outputs.packageName }}
+          files: ${{ env.packageName }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
 
