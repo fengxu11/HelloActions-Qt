@@ -72,6 +72,8 @@ jobs:
           Get-ChildItem -Path .
           Write-Host "Release directory content:"
           Get-ChildItem -Path ./release
+          Write-Host "Bin directory content:"
+          Get-ChildItem -Path ./bin
 
       - name: package
         env:
