@@ -77,14 +77,14 @@ jobs:
 
       - name: package
         env:
-          archiveName: ${{ matrix.qt_ver }}-${{ matrix.qt_arch }}
+          archiveName: v${{ inputs.tag }}-${{ matrix.qt_ver }}-${{ matrix.qt_arch }}
           targetName: ${{ env.targetName }}
         shell: pwsh
         run: |
           if (Test-Path -Path $env:targetName) {
             Compress-Archive -Path $env:targetName -DestinationPath "$env:archiveName.zip"
             Write-Host "Archive created: $env:archiveName.zip"
-            echo "packageName=$env:archiveName.zip" >> $GITHUB_ENV
+            echo "packageName=${{ env.archiveName }}.zip" >> $GITHUB_ENV
           } else {
             Write-Host "Error: Target file '$env:targetName' not found."
             exit 1
