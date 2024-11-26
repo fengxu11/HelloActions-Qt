@@ -81,13 +81,25 @@ jobs:
           targetName: ${{ env.targetName }}
         shell: pwsh
         run: |
-          Compress-Archive -Path $env:targetName -DestinationPath "$env:archiveName.zip"
-          Write-Host "Archive created: $env:archiveName.zip"
-          echo "::set-output name=packageName::$env:archiveName.zip"
+          if (Test-Path -Path $env:targetName) {
+            Compress-Archive -Path $env:targetName -DestinationPath "$env:archiveName.zip"
+            Write-Host "Archive created: $env:archiveName.zip"
+            echo "::set-output name=packageName::$env:archiveName.zip"
+          } else {
+            Write-Host "Error: Target file '$env:targetName' not found."
+            exit 1
+          }
+
+      - name: Debug upload artifact
+        run: |
+          echo "Artifact name: Artifact-${{ matrix.qt_arch }}"
+          echo "File path: ./${{ steps.package.outputs.packageName }}"
+          ls ./${{ steps.package.outputs.packageName }}
+
 
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.package.outputs.packageName }}
+          name: Artifact-${{ matrix.qt_arch }}
           path: ./${{ steps.package.outputs.packageName }}
 
       - name: Upload to GitHub Release
